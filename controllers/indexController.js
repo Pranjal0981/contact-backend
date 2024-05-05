@@ -4,19 +4,18 @@ const ErrorHandler = require('../utils/ErrorHandler')
 
 exports.createContact = catchAsyncErrors(async (req, res, next) => {
     try {
-        const { name, phone, email } = req.body;
+        console.log(req.body)
+        const { firstName, lastName, status } = req.body;
         const newUser = new User({
-            name: name,
-            phone: phone,
-            email: email
+            firstName,
+            lastName,
+            status
         });
         const savedUser = await newUser.save();
         res.status(201).json({
             status: 'success',
-            data: {
-                user: savedUser
-            }
-        });
+            data:newUser,})
+
     } catch (error){
         return next(error);
     }
@@ -27,10 +26,8 @@ exports.viewContact=catchAsyncErrors(async(req,res,next)=>{
         const allcontacts=await User.find()
         res.status(201).json({
             status: 'success',
-            data: {
-                user: allcontacts
-            }
-        });
+            data: allcontacts
+        })
     } catch (error) {
         return next(error);
     }  
@@ -39,7 +36,7 @@ exports.viewContact=catchAsyncErrors(async(req,res,next)=>{
 exports.updateContact = catchAsyncErrors(async (req, res, next) => {
     try {
         const userId = req.params.id; // Assuming the ID is passed in the request params
-        const { name, phone, email } = req.body;
+        const { firstName,lastName,status} = req.body;
         let user = await User.findById(userId);
 
         if (!user) {
@@ -48,9 +45,9 @@ exports.updateContact = catchAsyncErrors(async (req, res, next) => {
                 message: 'User not found'
             });
         }
-        user.name = name || user.name;
-        user.phone = phone || user.phone;
-        user.email = email || user.email;
+        user.firstName = firstName || user.firstName;
+        user.lastName = lastName || user.lastName;
+        user.status = status || user.status;
         const updatedUser = await user.save();
         res.status(200).json({
             status: 'success',

@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    firstname: {
+    firstName: {
         type: String,
         minlength: [4, "Firstname should be at least 4 characters long"]
     },
-    lastname: {
+    lastName: {
         type: String,
         minlength: [4, "Firstname should be at least 4 characters long"]
     },
